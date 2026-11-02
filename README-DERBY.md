@@ -21,3 +21,16 @@ The embedded Derby database is created in `hotdogstanddb` relative to the proces
 ## Validation
 
 All project Java source files were successfully compiled using javac with the bundled date-picker JAR. Actual Derby startup and the Swing GUI could not be tested in the build environment because the Derby runtime libraries were not installed there.
+
+Test
+cd C:\Users\joeoa\IdeaProjects\main\javaHotDogStand2026
+
+C:\Users\joeoa\IdeaProjects\main\javaHotDogStand2026>ij
+ij version 10.17
+ij> CONNECT 'jdbc:derby:hotdogstanddb;user=hotdogstanddb;password=hotdogstanddb';
+
+ij> SELECT * FROM HD_CUSTOMER;
+CUSTOMER_ID|CUSTOMER_FIRST_NAME |CUSTOMER_LAST_NAME  |CUSTOMER_FAVORITE_M&
+--------------------------------------------------------------------------
+1          |Oakes               |Joe                 |yum
+
