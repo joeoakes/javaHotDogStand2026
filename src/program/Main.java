@@ -19,9 +19,15 @@ import java.time.LocalTime;
  *
  * @author Gokhan
  */
+/**
+ * Main Swing window for the Hot Dog Stand application.
+ * Provides customer and order CRUD operations through DAO objects.
+ */
 public class Main extends javax.swing.JFrame {
+    // Data access objects isolate database operations from the user interface.
     private static DAO customerDAO, orderDAO;
 
+    /** Builds the window and loads the current customer and order records. */
     public Main() {
         initComponents();
         refreshCustomersTable();
@@ -76,15 +82,15 @@ public class Main extends javax.swing.JFrame {
         jTabbedPaneHotDogStand.setName("Customer"); // NOI18N
 
         jTableCustomer.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object [][] {
 
-            },
-            new String [] {
-                "ID", "First Name", "Last Name", "Favorite Meal"
-            }
+                },
+                new String [] {
+                        "ID", "First Name", "Last Name", "Favorite Meal"
+                }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                    false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -152,60 +158,60 @@ public class Main extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanelCustomerLayout = new javax.swing.GroupLayout(jPanelCustomer);
         jPanelCustomer.setLayout(jPanelCustomerLayout);
         jPanelCustomerLayout.setHorizontalGroup(
-            jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelCustomerLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelCustomerLayout.createSequentialGroup()
-                        .addComponent(jButtonInsertCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34)
-                        .addComponent(jButtonUpdateCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
-                        .addComponent(jButtonDeleteCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelCustomerLayout.createSequentialGroup()
-                        .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelCustomerFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelCustomerLastName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelCustomerFavoriteMeal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTextFieldCustomerLastName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-                            .addComponent(jTextFieldCustomerFirstName, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldCustomerID, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldCustomerFavoriteMeal))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(64, 64, 64))
+                jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanelCustomerLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanelCustomerLayout.createSequentialGroup()
+                                                .addComponent(jButtonInsertCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(34, 34, 34)
+                                                .addComponent(jButtonUpdateCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                                                .addComponent(jButtonDeleteCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanelCustomerLayout.createSequentialGroup()
+                                                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabelCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jLabelCustomerFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jLabelCustomerLastName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jLabelCustomerFavoriteMeal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                        .addComponent(jTextFieldCustomerLastName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+                                                        .addComponent(jTextFieldCustomerFirstName, javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jTextFieldCustomerID, javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jTextFieldCustomerFavoriteMeal))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPaneCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(64, 64, 64))
         );
         jPanelCustomerLayout.setVerticalGroup(
-            jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelCustomerLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPaneCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanelCustomerLayout.createSequentialGroup()
-                        .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelCustomerFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldCustomerFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelCustomerLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldCustomerLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelCustomerFavoriteMeal, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldCustomerFavoriteMeal, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonUpdateCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonDeleteCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonInsertCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(92, Short.MAX_VALUE))
+                jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanelCustomerLayout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jScrollPaneCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(jPanelCustomerLayout.createSequentialGroup()
+                                                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jLabelCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jTextFieldCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jLabelCustomerFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jTextFieldCustomerFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jLabelCustomerLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jTextFieldCustomerLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jLabelCustomerFavoriteMeal, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jTextFieldCustomerFavoriteMeal, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jButtonUpdateCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jButtonDeleteCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jButtonInsertCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addContainerGap(92, Short.MAX_VALUE))
         );
 
         jLabelCustomerLastName.getAccessibleContext().setAccessibleName("ID");
@@ -214,15 +220,15 @@ public class Main extends javax.swing.JFrame {
         jTabbedPaneHotDogStand.addTab("Customer", jPanelCustomer);
 
         jTableOrder.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object [][] {
 
-            },
-            new String [] {
-                "Order ID", "Customer ID", "Name", "Order Price", "Order Date Time", "Item Name"
-            }
+                },
+                new String [] {
+                        "Order ID", "Customer ID", "Name", "Order Price", "Order Date Time", "Item Name"
+                }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                    false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -288,68 +294,68 @@ public class Main extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanelOrderLayout = new javax.swing.GroupLayout(jPanelOrder);
         jPanelOrder.setLayout(jPanelOrderLayout);
         jPanelOrderLayout.setHorizontalGroup(
-            jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelOrderLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelOrderLayout.createSequentialGroup()
-                        .addComponent(jButtonInsertOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
-                        .addComponent(jButtonUpdateOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonDeleteOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelOrderLayout.createSequentialGroup()
-                        .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelOrderDateTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelOrderPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelOrderCustomerID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelOrderLayout.createSequentialGroup()
-                                .addComponent(jLabelOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jLabelItemName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(dateTimePickerOrderDateTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextFieldOrderPrice)
-                            .addComponent(jTextFieldOrderID)
-                            .addComponent(jTextFieldItemName)
-                            .addComponent(jTextFieldOrderCustomerID))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPaneOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 533, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(616, 616, 616))
+                jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanelOrderLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanelOrderLayout.createSequentialGroup()
+                                                .addComponent(jButtonInsertOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(33, 33, 33)
+                                                .addComponent(jButtonUpdateOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jButtonDeleteOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanelOrderLayout.createSequentialGroup()
+                                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabelOrderDateTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jLabelOrderPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jLabelOrderCustomerID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelOrderLayout.createSequentialGroup()
+                                                                .addComponent(jLabelOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(0, 0, Short.MAX_VALUE))
+                                                        .addComponent(jLabelItemName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(dateTimePickerOrderDateTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jTextFieldOrderPrice)
+                                                        .addComponent(jTextFieldOrderID)
+                                                        .addComponent(jTextFieldItemName)
+                                                        .addComponent(jTextFieldOrderCustomerID))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPaneOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 533, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(616, 616, 616))
         );
         jPanelOrderLayout.setVerticalGroup(
-            jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelOrderLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPaneOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanelOrderLayout.createSequentialGroup()
-                        .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(9, 9, 9)
-                        .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldOrderCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelOrderCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldOrderPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelOrderPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelOrderDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dateTimePickerOrderDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonUpdateOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonDeleteOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonInsertOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(78, Short.MAX_VALUE))
+                jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanelOrderLayout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jScrollPaneOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(jPanelOrderLayout.createSequentialGroup()
+                                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                        .addComponent(jTextFieldOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jLabelOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(9, 9, 9)
+                                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jTextFieldOrderCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jLabelOrderCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jTextFieldOrderPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jLabelOrderPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jLabelOrderDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(dateTimePickerOrderDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jTextFieldItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jLabelItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jButtonUpdateOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jButtonDeleteOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jButtonInsertOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addContainerGap(78, Short.MAX_VALUE))
         );
 
         jTabbedPaneHotDogStand.addTab("Order", jPanelOrder);
@@ -357,12 +363,12 @@ public class Main extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPaneHotDogStand, javax.swing.GroupLayout.PREFERRED_SIZE, 934, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jTabbedPaneHotDogStand, javax.swing.GroupLayout.PREFERRED_SIZE, 934, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPaneHotDogStand, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jTabbedPaneHotDogStand, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         jTabbedPaneHotDogStand.getAccessibleContext().setAccessibleName("Order");
@@ -371,6 +377,7 @@ public class Main extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /** Copies the selected order into the form, including its date and time. */
     private void jTableOrderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableOrderMouseClicked
         int i = jTableOrder.getSelectedRow();
         TableModel model = jTableOrder.getModel();
@@ -379,23 +386,23 @@ public class Main extends javax.swing.JFrame {
         jTextFieldOrderPrice.setText(model.getValueAt(i, 3).toString());
         String date = model.getValueAt(i, 4).toString();
 
-        /** 
+        /**
          * Takes the String value from the Order Date Time column and parse the String using substring method.
          * LocalDate.of() takes in 3 integer value of year, month, date and returns a LocalDate object. LocalDate.of(y, m, d)
          * LocalTime.of() similarly takes in 2 integer value of hour, minute. LocalTime.of(h, m)
-         * 
-         * Example: 
-            * String date = 2021-02-23 08:49:11.556;
-            * date.substring(0, 4) returns 2021 /year
-            * date.substring(5, 7) returns 02 /month
-            * date.substring(8, 10) returns 23 /day
-            * date.substring(11, 13) returns 08 /hour
-            * date.substring(14, 16) returns 49 /min
-        */ 
-        LocalDate date1 = LocalDate.of(Integer.parseInt(date.substring(0, 4)) , 
+         *
+         * Example:
+         * String date = 2021-02-23 08:49:11.556;
+         * date.substring(0, 4) returns 2021 /year
+         * date.substring(5, 7) returns 02 /month
+         * date.substring(8, 10) returns 23 /day
+         * date.substring(11, 13) returns 08 /hour
+         * date.substring(14, 16) returns 49 /min
+         */
+        LocalDate date1 = LocalDate.of(Integer.parseInt(date.substring(0, 4)) ,
                 Integer.parseInt(date.substring(5, 7)), Integer.parseInt(date.substring(8, 10)));
         LocalTime time1 = LocalTime.of(Integer.parseInt(date.substring(11, 13)), Integer.parseInt(date.substring(14, 16)));
-        
+
         /**
          * LocalDate object is inserted into datePicker.setDate() to set the value of the dataPicker.
          * LocalTime object is inserted into timePicker.setTime() to set the value of the timePicker.
@@ -405,10 +412,11 @@ public class Main extends javax.swing.JFrame {
         jTextFieldItemName.setText(model.getValueAt(i, 5).toString());
     }//GEN-LAST:event_jTableOrderMouseClicked
 
+    /** Reads the order form, checks IDs, inserts the order, and refreshes the table. */
     private void jButtonInsertOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertOrderActionPerformed
         // TODO add your handling code here:
         //System.out.println(dateTimePicker.datePicker.getDateStringOrEmptyString() + " " + dateTimePicker.timePicker.getTimeStringOrEmptyString()+":00.0");
-       if (!jTextFieldOrderID.getText().isEmpty()) {
+        if (!jTextFieldOrderID.getText().isEmpty()) {
             int ID = Integer.parseInt(jTextFieldOrderID.getText().trim());
             int CID = Integer.parseInt(jTextFieldOrderCustomerID.getText().trim());
             int price = Integer.parseInt(jTextFieldOrderPrice.getText().trim());
@@ -426,6 +434,7 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonInsertOrderActionPerformed
 
+    /** Updates an existing order identified by its order ID. */
     private void jButtonUpdateOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateOrderActionPerformed
         if (!jTextFieldOrderID.getText().isEmpty()) {
             int ID = Integer.parseInt(jTextFieldOrderID.getText().trim());
@@ -450,8 +459,9 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonUpdateOrderActionPerformed
 
+    /** Confirms and deletes the selected order when its ID exists. */
     private void jButtonDeleteOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteOrderActionPerformed
-       if (!jTextFieldOrderID.getText().isEmpty()) {
+        if (!jTextFieldOrderID.getText().isEmpty()) {
             int ID = Integer.parseInt(jTextFieldOrderID.getText().trim());
             int CID = Integer.parseInt(jTextFieldOrderCustomerID.getText().trim());
             int price = Integer.parseInt(jTextFieldOrderPrice.getText().trim());
@@ -478,6 +488,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonDeleteOrderActionPerformed
 
     //handles delete button action
+    /** Confirms and deletes an existing customer record. */
     private void jButtonDeleteCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteCustomerActionPerformed
         // TODO add your handling code here:
         if (!jTextFieldCustomerID.getText().isEmpty()) {
@@ -506,6 +517,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonDeleteCustomerActionPerformed
 
     //handles update button action
+    /** Reads customer fields and updates the matching database record. */
     private void jButtonUpdateCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateCustomerActionPerformed
         // TODO add your handling code here:
         if (!jTextFieldCustomerID.getText().isEmpty()) {
@@ -514,7 +526,7 @@ public class Main extends javax.swing.JFrame {
             String lName = jTextFieldCustomerFirstName.getText().trim();
             String favoriteMeal = jTextFieldCustomerFavoriteMeal.getText().trim();
             Customer customer = getCustomer(ID);
-            if(customer.getID() != -1) {                
+            if(customer.getID() != -1) {
                 updateCustomer(ID, fName, lName, favoriteMeal);
                 refreshCustomersTable();
             }
@@ -530,6 +542,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonUpdateCustomerActionPerformed
 
     //handle insert button action
+    /** Reads customer fields, checks for a duplicate ID, and inserts a record. */
     private void jButtonInsertCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertCustomerActionPerformed
         // TODO add your handling code here:
 
@@ -550,6 +563,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonInsertCustomerActionPerformed
 
     //set the values of a row to the textfields
+    /** Fills the customer input fields from the selected table row. */
     private void jTableCustomerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableCustomerMouseClicked
         // TODO add your handling code here:
         int i = jTableCustomer.getSelectedRow();
@@ -560,6 +574,7 @@ public class Main extends javax.swing.JFrame {
         jTextFieldCustomerFavoriteMeal.setText(model.getValueAt(i, 3).toString());
     }//GEN-LAST:event_jTableCustomerMouseClicked
 
+    /** Action hook for pressing Enter in the Favorite Meal field (currently empty). */
     private void jTextFieldCustomerFavoriteMealActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCustomerFavoriteMealActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldCustomerFavoriteMealActionPerformed
@@ -567,98 +582,113 @@ public class Main extends javax.swing.JFrame {
 
 
     //method to show an info alert
+    /** Displays an informational message to the user. */
     public void alert(String msg) {
         JOptionPane.showMessageDialog(rootPane, msg);
     }
-    
+
     //method to check for order's customer id foreign key violation
+    /** Warns if the order refers to a customer ID that does not exist. */
     public void foreignKeyViolationOrder(int id) {
         if(getCustomer(id).getID() == -1) {
             alert("Customer ID does not exist", "Foreign Key Violation");
         }
     }
-    
+
     //method to check for customer primary key violation
+    /** Warns if a customer with the proposed primary key already exists. */
     public void primaryKeyViolationCustomer(int id) {
         if(getCustomer(id).getID() != -1) {
             alert("Another customer already exists with same Customer ID, please try another Customer ID", "Primary Key Violation");
         }
     }
-    
+
     //method to check for order primary key violation
+    /** Warns if an order with the proposed primary key already exists. */
     public void primaryKeyViolationOrder(int id) {
         if(getOrder(id).getID() != -1) {
             alert("Another order already exists with same Order ID, please try another Order ID", "Primary Key Violation");
         }
     }
-    
+
     //method to show an error alert
+    /** Displays an error dialog with a custom title. */
     public void alert(String msg, String title) {
         JOptionPane.showMessageDialog(rootPane, msg, title, JOptionPane.ERROR_MESSAGE);
     }
 
     /**
      * CUSTOMER CRUD FUNCTIONS
-    */
+     */
+    /** Creates a Customer object and delegates insertion to the DAO. */
     private static void addCustomer(int id, String firstName, String lastName, String favoriteMeal) {
         Customer customer;
         customer = new Customer(id, firstName, lastName, favoriteMeal);
         customerDAO.insert(customer);
     }
-    
+
+    /** Delegates a customer update to the DAO. */
     private static void updateCustomer(int id, String firstName, String lastName, String favoriteMeal) {
         Customer customer;
         customer = new Customer(id, firstName, lastName, favoriteMeal);
         customerDAO.update(customer);
     }
-    
+
+    /** Delegates a customer deletion to the DAO. */
     private static void deleteCustomer(int id, String firstName, String lastName, String favoriteMeal) {
         Customer contact;
         contact = new Customer(id, firstName, lastName, favoriteMeal);
         customerDAO.delete(contact);
     }
-    
+
+    /** Finds a customer by ID; returns an ID -1 placeholder if absent. */
     static Customer getCustomer(int id) {
         Optional<Customer> customer = customerDAO.get(id);
         return customer.orElseGet(() -> new Customer(-1, "Non-exist", "Non-exist", "Non-exist"));
     }
-    
-    
+
+
     /**
      * ORDER CRUD FUNCTIONS
-    */
+     */
+    /** Creates an Order object and delegates insertion to the DAO. */
     private static void addOrder(int ID, int price, String dateTime, String itemName, int customerID) {
         Order order;
         order = new Order(ID, price, dateTime, itemName, customerID);
         orderDAO.insert(order);
     }
-    
+
+    /** Delegates an order update to the DAO. */
     private static void updateOrder(int ID, int price, String dateTime, String itemName, int customerID) {
         Order order;
         order = new Order(ID, price, dateTime, itemName, customerID);
         orderDAO.update(order);
     }
-    
+
+    /** Delegates an order deletion to the DAO. */
     private static void deleteOrder(int ID, int price, String dateTime, String itemName, int customerID) {
         Order order;
         order = new Order(ID, price, dateTime, itemName, customerID);
         orderDAO.delete(order);
     }
-    
+
+    /** Finds an order by ID; returns an ID -1 placeholder if absent. */
     static Order getOrder(int id) {
         Optional<Order> order = orderDAO.get(id);
         return order.orElseGet(() -> new Order(-1, -1, "Non-exist", "Non-exist", -1));
     }
-    
+
     //method to clear the customer txt fields
+    /** Resets all customer form fields after an operation. */
     private void clearCustomerTextFields() {
         jTextFieldCustomerID.setText("");
         jTextFieldCustomerLastName.setText("");
         jTextFieldCustomerFirstName.setText("");
         jTextFieldCustomerFavoriteMeal.setText("");
     }
-    
+
     //method to clear the order txt fields
+    /** Resets order text fields; the date/time picker is left unchanged. */
     private void clearOrderTextFields() {
         jTextFieldOrderID.setText("");
         jTextFieldOrderCustomerID.setText("");
@@ -667,7 +697,9 @@ public class Main extends javax.swing.JFrame {
     }
 
     //fetch customer table
+    /** Rebuilds the customer JTable from the latest DAO query results. */
     private void refreshCustomersTable() {
+        // Fetch current rows from the database through the DAO.
         List<Customer> customers = customerDAO.getAll();
         DefaultTableModel model = (DefaultTableModel) jTableCustomer.getModel();
         //Clear all items in tblContacts
@@ -675,17 +707,19 @@ public class Main extends javax.swing.JFrame {
             model.removeRow(i);
         }
         for (Customer customer : customers) {
-                Object[] row = new Object[4];
-                row[0] = customer.getID();
-                row[1] = customer.getFirstName();
-                row[2] = customer.getLastName();
-                row[3] = customer.getFavoriteMeal();
-                model.addRow(row);
+            Object[] row = new Object[4];
+            row[0] = customer.getID();
+            row[1] = customer.getFirstName();
+            row[2] = customer.getLastName();
+            row[3] = customer.getFavoriteMeal();
+            model.addRow(row);
         }
     }
-    
+
     //fetch order table
+    /** Rebuilds the orders JTable, looking up customer names by ID. */
     private void refreshOrdersTable() {
+        // Fetch orders and rebuild the read-only table model.
         List<Order> orders = orderDAO.getAll();
         DefaultTableModel model = (DefaultTableModel) jTableOrder.getModel();
         //Clear all items in tblContacts
@@ -693,27 +727,28 @@ public class Main extends javax.swing.JFrame {
             model.removeRow(i);
         }
         for (Order order : orders) {
-                Object[] row = new Object[6];
-                row[0] = order.getID();
-                row[1] = order.getCustomerID();
-                row[2] = getCustomer(order.getCustomerID()).getFirstName() + " " + getCustomer(order.getCustomerID()).getLastName();
-                row[3] = order.getPrice();
-                row[4] = order.getDateTime();
-                row[5] = order.getItemName();
-                model.addRow(row);
+            Object[] row = new Object[6];
+            row[0] = order.getID();
+            row[1] = order.getCustomerID();
+            row[2] = getCustomer(order.getCustomerID()).getFirstName() + " " + getCustomer(order.getCustomerID()).getLastName();
+            row[3] = order.getPrice();
+            row[4] = order.getDateTime();
+            row[5] = order.getItemName();
+            model.addRow(row);
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */
+    /** Creates the DAOs, selects the Nimbus look and feel, and opens the UI on the EDT. */
     public static void main(String args[]) {
         customerDAO = new CustomerDAO();
         orderDAO = new OrderDAO();
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -737,6 +772,7 @@ public class Main extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        // Swing components should be created on the Event Dispatch Thread.
         java.awt.EventQueue.invokeLater(() -> {
             new Main().setVisible(true);
         });
