@@ -1,814 +1,315 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package program;
 
-import java.util.List;
-import javax.swing.JOptionPane;
+import entity.Customer;
+import entity.CustomerDAO;
+import entity.Order;
+import entity.OrderDAO;
+
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import entity.*;
-import java.util.Optional;
-import java.time.LocalDate;
-import java.time.LocalTime;
-
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 /**
+ * Native IntelliJ Swing UI Designer form.
  *
- * @author Gokhan
+ * The matching Main.form creates and binds the components declared below.
+ * This class contains application behavior, not generated layout code.
+ *
+ * IMPORTANT: Compile using IntelliJ's Swing UI Designer support.
  */
-/**
- * Main Swing window for the Hot Dog Stand application.
- * Provides customer and order CRUD operations through DAO objects.
- */
-public class Main extends javax.swing.JFrame {
-    // Data access objects isolate database operations from the user interface.
-    private static DAO customerDAO, orderDAO;
+public class Main extends JFrame {
+    private final CustomerDAO customerDAO = new CustomerDAO();
+    private final OrderDAO orderDAO = new OrderDAO();
 
-    /** Builds the window and loads the current customer and order records. */
+    // These names must match the "binding" attributes in Main.form.
+    private JPanel rootPanel;
+    private JTabbedPane jTabbedPaneHotDogStand;
+    private JPanel jPanelCustomer;
+    private JPanel jPanelOrder;
+
+    private JTextField jTextFieldCustomerID;
+    private JTextField jTextFieldCustomerFirstName;
+    private JTextField jTextFieldCustomerLastName;
+    private JTextField jTextFieldCustomerFavoriteMeal;
+    private JButton jButtonInsertCustomer;
+    private JButton jButtonUpdateCustomer;
+    private JButton jButtonDeleteCustomer;
+    private JTable jTableCustomer;
+
+    private JTextField jTextFieldOrderID;
+    private JTextField jTextFieldOrderCustomerID;
+    private JTextField jTextFieldOrderPrice;
+    private JTextField jTextFieldOrderDateTime;
+    private JTextField jTextFieldItemName;
+    private JButton jButtonInsertOrder;
+    private JButton jButtonUpdateOrder;
+    private JButton jButtonDeleteOrder;
+    private JTable jTableOrder;
+
+    private static final DateTimeFormatter DATE_FORMAT =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     public Main() {
-        initComponents();
+        // rootPanel is instantiated by IntelliJ's GUI Designer instrumentation.
+        setContentPane(rootPanel);
+        setTitle("Hot Dog Stand - JDBC");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(1000, 430);
+        setLocationRelativeTo(null);
+
+        // The tables display database records but do not allow inline editing.
+        jTableCustomer.setModel(readOnlyModel(
+                "ID", "First Name", "Last Name", "Favorite Meal"));
+        jTableOrder.setModel(readOnlyModel(
+                "Order ID", "Customer ID", "Name", "Order Price",
+                "Order Date Time", "Item Name"));
+
+        // Register handlers for CRUD buttons.
+        jButtonInsertCustomer.addActionListener(e -> insertCustomer());
+        jButtonUpdateCustomer.addActionListener(e -> updateCustomer());
+        jButtonDeleteCustomer.addActionListener(e -> deleteCustomer());
+        jButtonInsertOrder.addActionListener(e -> insertOrder());
+        jButtonUpdateOrder.addActionListener(e -> updateOrder());
+        jButtonDeleteOrder.addActionListener(e -> deleteOrder());
+
+        // Clicking a table row copies the values into the edit fields.
+        jTableCustomer.addMouseListener(new MouseAdapter() {
+            @Override public void mouseClicked(MouseEvent e) {
+                int row = jTableCustomer.getSelectedRow();
+                if (row < 0) return;
+                int modelRow = jTableCustomer.convertRowIndexToModel(row);
+                jTextFieldCustomerID.setText(cell(jTableCustomer, modelRow, 0));
+                jTextFieldCustomerFirstName.setText(cell(jTableCustomer, modelRow, 1));
+                jTextFieldCustomerLastName.setText(cell(jTableCustomer, modelRow, 2));
+                jTextFieldCustomerFavoriteMeal.setText(cell(jTableCustomer, modelRow, 3));
+            }
+        });
+        jTableOrder.addMouseListener(new MouseAdapter() {
+            @Override public void mouseClicked(MouseEvent e) {
+                int row = jTableOrder.getSelectedRow();
+                if (row < 0) return;
+                int modelRow = jTableOrder.convertRowIndexToModel(row);
+                jTextFieldOrderID.setText(cell(jTableOrder, modelRow, 0));
+                jTextFieldOrderCustomerID.setText(cell(jTableOrder, modelRow, 1));
+                jTextFieldOrderPrice.setText(cell(jTableOrder, modelRow, 3));
+                jTextFieldOrderDateTime.setText(cell(jTableOrder, modelRow, 4));
+                jTextFieldItemName.setText(cell(jTableOrder, modelRow, 5));
+            }
+        });
+
         refreshCustomersTable();
         refreshOrdersTable();
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        jTabbedPaneHotDogStand = new javax.swing.JTabbedPane();
-        jPanelCustomer = new javax.swing.JPanel();
-        jScrollPaneCustomer = new javax.swing.JScrollPane();
-        jTableCustomer = new javax.swing.JTable();
-        jTextFieldCustomerID = new javax.swing.JTextField();
-        jTextFieldCustomerFirstName = new javax.swing.JTextField();
-        jTextFieldCustomerLastName = new javax.swing.JTextField();
-        jTextFieldCustomerFavoriteMeal = new javax.swing.JTextField();
-        jLabelCustomerFavoriteMeal = new javax.swing.JLabel();
-        jLabelCustomerLastName = new javax.swing.JLabel();
-        jLabelCustomerFirstName = new javax.swing.JLabel();
-        jLabelCustomerID = new javax.swing.JLabel();
-        jButtonInsertCustomer = new javax.swing.JButton();
-        jButtonUpdateCustomer = new javax.swing.JButton();
-        jButtonDeleteCustomer = new javax.swing.JButton();
-        jPanelOrder = new javax.swing.JPanel();
-        jScrollPaneOrder = new javax.swing.JScrollPane();
-        jTableOrder = new javax.swing.JTable();
-        jTextFieldOrderID = new javax.swing.JTextField();
-        jLabelOrderID = new javax.swing.JLabel();
-        jLabelOrderCustomerID = new javax.swing.JLabel();
-        jTextFieldOrderCustomerID = new javax.swing.JTextField();
-        jTextFieldOrderPrice = new javax.swing.JTextField();
-        jLabelOrderPrice = new javax.swing.JLabel();
-        jLabelOrderDateTime = new javax.swing.JLabel();
-        jButtonInsertOrder = new javax.swing.JButton();
-        jButtonUpdateOrder = new javax.swing.JButton();
-        jButtonDeleteOrder = new javax.swing.JButton();
-        jLabelItemName = new javax.swing.JLabel();
-        jTextFieldItemName = new javax.swing.JTextField();
-        dateTimePickerOrderDateTime = new com.github.lgooddatepicker.components.DateTimePicker();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("HotDog Stand CRUD");
-        setResizable(false);
-
-        jTabbedPaneHotDogStand.setName("Customer"); // NOI18N
-
-        jTableCustomer.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
-
-                },
-                new String [] {
-                        "ID", "First Name", "Last Name", "Favorite Meal"
-                }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                    false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+    private static DefaultTableModel readOnlyModel(String... columns) {
+        return new DefaultTableModel(columns, 0) {
+            @Override public boolean isCellEditable(int row, int column) {
+                return false;
             }
-        });
-        jTableCustomer.setCellSelectionEnabled(true);
-        jTableCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTableCustomerMouseClicked(evt);
-            }
-        });
-        jScrollPaneCustomer.setViewportView(jTableCustomer);
-        if (jTableCustomer.getColumnModel().getColumnCount() > 0) {
-            jTableCustomer.getColumnModel().getColumn(2).setResizable(false);
+        };
+    }
+
+    private static String cell(JTable table, int row, int column) {
+        Object value = table.getModel().getValueAt(row, column);
+        return value == null ? "" : value.toString();
+    }
+
+    private static int number(JTextField field, String label) {
+        try {
+            return Integer.parseInt(field.getText().trim());
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(label + " must be a whole number.");
         }
+    }
 
-        jTextFieldCustomerFavoriteMeal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldCustomerFavoriteMealActionPerformed(evt);
+    private static String required(JTextField field, String label) {
+        String value = field.getText().trim();
+        if (value.isEmpty()) throw new IllegalArgumentException(label + " is required.");
+        return value;
+    }
+
+    private static String orderDateTime(JTextField field) {
+        String text = required(field, "Order date/time");
+        try {
+            // Accept both the simple input format and Derby timestamp strings.
+            LocalDateTime value;
+            if (text.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$")) {
+                value = LocalDateTime.parse(text + ":00", DATE_FORMAT);
+            } else {
+                value = LocalDateTime.parse(text.replace(' ', 'T'));
             }
-        });
-
-        jLabelCustomerFavoriteMeal.setText("Favorite Meal");
-        jLabelCustomerFavoriteMeal.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        jLabelCustomerFavoriteMeal.setToolTipText("");
-
-        jLabelCustomerLastName.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        jLabelCustomerLastName.setText("Last Name");
-        jLabelCustomerLastName.setToolTipText("");
-
-        jLabelCustomerFirstName.setText("First Name");
-        jLabelCustomerFirstName.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-
-        jLabelCustomerID.setText("ID");
-        jLabelCustomerID.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-
-        jButtonInsertCustomer.setText("Insert");
-        jButtonInsertCustomer.setActionCommand("Insert");
-        jButtonInsertCustomer.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButtonInsertCustomer.setIconTextGap(0);
-        jButtonInsertCustomer.setInheritsPopupMenu(true);
-        jButtonInsertCustomer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonInsertCustomerActionPerformed(evt);
-            }
-        });
-
-        jButtonUpdateCustomer.setText("Update");
-        jButtonUpdateCustomer.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButtonUpdateCustomer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonUpdateCustomerActionPerformed(evt);
-            }
-        });
-
-        jButtonDeleteCustomer.setText("Delete");
-        jButtonDeleteCustomer.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButtonDeleteCustomer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDeleteCustomerActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanelCustomerLayout = new javax.swing.GroupLayout(jPanelCustomer);
-        jPanelCustomer.setLayout(jPanelCustomerLayout);
-        jPanelCustomerLayout.setHorizontalGroup(
-                jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelCustomerLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanelCustomerLayout.createSequentialGroup()
-                                                .addComponent(jButtonInsertCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(34, 34, 34)
-                                                .addComponent(jButtonUpdateCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
-                                                .addComponent(jButtonDeleteCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanelCustomerLayout.createSequentialGroup()
-                                                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabelCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jLabelCustomerFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jLabelCustomerLastName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jLabelCustomerFavoriteMeal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                        .addComponent(jTextFieldCustomerLastName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-                                                        .addComponent(jTextFieldCustomerFirstName, javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jTextFieldCustomerID, javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jTextFieldCustomerFavoriteMeal))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPaneCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(64, 64, 64))
-        );
-        jPanelCustomerLayout.setVerticalGroup(
-                jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelCustomerLayout.createSequentialGroup()
-                                .addGap(25, 25, 25)
-                                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPaneCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(jPanelCustomerLayout.createSequentialGroup()
-                                                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jLabelCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jTextFieldCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jLabelCustomerFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jTextFieldCustomerFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jLabelCustomerLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jTextFieldCustomerLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jLabelCustomerFavoriteMeal, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jTextFieldCustomerFavoriteMeal, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addGroup(jPanelCustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jButtonUpdateCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jButtonDeleteCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jButtonInsertCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addContainerGap(92, Short.MAX_VALUE))
-        );
-
-        jLabelCustomerLastName.getAccessibleContext().setAccessibleName("ID");
-        jButtonInsertCustomer.getAccessibleContext().setAccessibleName("Insert");
-
-        jTabbedPaneHotDogStand.addTab("Customer", jPanelCustomer);
-
-        jTableOrder.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
-
-                },
-                new String [] {
-                        "Order ID", "Customer ID", "Name", "Order Price", "Order Date Time", "Item Name"
-                }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                    false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTableOrder.setCellSelectionEnabled(true);
-        jTableOrder.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTableOrderMouseClicked(evt);
-            }
-        });
-        jScrollPaneOrder.setViewportView(jTableOrder);
-        if (jTableOrder.getColumnModel().getColumnCount() > 0) {
-            jTableOrder.getColumnModel().getColumn(2).setResizable(false);
+            return value.format(DATE_FORMAT) + ".0";
+        } catch (DateTimeParseException ex) {
+            throw new IllegalArgumentException(
+                    "Use date/time format yyyy-MM-dd HH:mm:ss (example: 2026-11-04 14:30:00).");
         }
+    }
 
-        jLabelOrderID.setText("Order ID");
-        jLabelOrderID.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+    private Customer customerFromForm() {
+        return new Customer(
+                number(jTextFieldCustomerID, "Customer ID"),
+                required(jTextFieldCustomerFirstName, "First name"),
+                required(jTextFieldCustomerLastName, "Last name"),
+                required(jTextFieldCustomerFavoriteMeal, "Favorite meal"));
+    }
 
-        jLabelOrderCustomerID.setText("Customer ID");
-        jLabelOrderCustomerID.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+    private Order orderFromForm() {
+        return new Order(
+                number(jTextFieldOrderID, "Order ID"),
+                number(jTextFieldOrderPrice, "Order price"),
+                orderDateTime(jTextFieldOrderDateTime),
+                required(jTextFieldItemName, "Item name"),
+                number(jTextFieldOrderCustomerID, "Customer ID"));
+    }
 
-        jLabelOrderPrice.setText("Order Price");
-        jLabelOrderPrice.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        jLabelOrderPrice.setToolTipText("");
-
-        jLabelOrderDateTime.setText("Order Date Time");
-        jLabelOrderDateTime.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        jLabelOrderDateTime.setToolTipText("");
-
-        jButtonInsertOrder.setText("Insert");
-        jButtonInsertOrder.setActionCommand("Insert");
-        jButtonInsertOrder.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButtonInsertOrder.setIconTextGap(0);
-        jButtonInsertOrder.setInheritsPopupMenu(true);
-        jButtonInsertOrder.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonInsertOrderActionPerformed(evt);
-            }
-        });
-
-        jButtonUpdateOrder.setText("Update");
-        jButtonUpdateOrder.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButtonUpdateOrder.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonUpdateOrderActionPerformed(evt);
-            }
-        });
-
-        jButtonDeleteOrder.setText("Delete");
-        jButtonDeleteOrder.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButtonDeleteOrder.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDeleteOrderActionPerformed(evt);
-            }
-        });
-
-        jLabelItemName.setText("Item Name");
-        jLabelItemName.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        jLabelItemName.setToolTipText("");
-
-        javax.swing.GroupLayout jPanelOrderLayout = new javax.swing.GroupLayout(jPanelOrder);
-        jPanelOrder.setLayout(jPanelOrderLayout);
-        jPanelOrderLayout.setHorizontalGroup(
-                jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelOrderLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanelOrderLayout.createSequentialGroup()
-                                                .addComponent(jButtonInsertOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(33, 33, 33)
-                                                .addComponent(jButtonUpdateOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jButtonDeleteOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanelOrderLayout.createSequentialGroup()
-                                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabelOrderDateTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jLabelOrderPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jLabelOrderCustomerID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelOrderLayout.createSequentialGroup()
-                                                                .addComponent(jLabelOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(0, 0, Short.MAX_VALUE))
-                                                        .addComponent(jLabelItemName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(dateTimePickerOrderDateTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jTextFieldOrderPrice)
-                                                        .addComponent(jTextFieldOrderID)
-                                                        .addComponent(jTextFieldItemName)
-                                                        .addComponent(jTextFieldOrderCustomerID))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jScrollPaneOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 533, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(616, 616, 616))
-        );
-        jPanelOrderLayout.setVerticalGroup(
-                jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelOrderLayout.createSequentialGroup()
-                                .addGap(25, 25, 25)
-                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPaneOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(jPanelOrderLayout.createSequentialGroup()
-                                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(jTextFieldOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jLabelOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(9, 9, 9)
-                                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jTextFieldOrderCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jLabelOrderCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jTextFieldOrderPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jLabelOrderPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jLabelOrderDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(dateTimePickerOrderDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jTextFieldItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jLabelItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jButtonUpdateOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jButtonDeleteOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jButtonInsertOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addContainerGap(78, Short.MAX_VALUE))
-        );
-
-        jTabbedPaneHotDogStand.addTab("Order", jPanelOrder);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jTabbedPaneHotDogStand, javax.swing.GroupLayout.PREFERRED_SIZE, 934, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jTabbedPaneHotDogStand, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-
-        jTabbedPaneHotDogStand.getAccessibleContext().setAccessibleName("Order");
-
-        pack();
-        setLocationRelativeTo(null);
-    }// </editor-fold>//GEN-END:initComponents
-
-    /** Copies the selected order into the form, including its date and time. */
-    private void jTableOrderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableOrderMouseClicked
-        int i = jTableOrder.getSelectedRow();
-        TableModel model = jTableOrder.getModel();
-        jTextFieldOrderID.setText(model.getValueAt(i, 0).toString());
-        jTextFieldOrderCustomerID.setText(model.getValueAt(i, 1).toString());
-        jTextFieldOrderPrice.setText(model.getValueAt(i, 3).toString());
-        String date = model.getValueAt(i, 4).toString();
-
-        /**
-         * Takes the String value from the Order Date Time column and parse the String using substring method.
-         * LocalDate.of() takes in 3 integer value of year, month, date and returns a LocalDate object. LocalDate.of(y, m, d)
-         * LocalTime.of() similarly takes in 2 integer value of hour, minute. LocalTime.of(h, m)
-         *
-         * Example:
-         * String date = 2021-02-23 08:49:11.556;
-         * date.substring(0, 4) returns 2021 /year
-         * date.substring(5, 7) returns 02 /month
-         * date.substring(8, 10) returns 23 /day
-         * date.substring(11, 13) returns 08 /hour
-         * date.substring(14, 16) returns 49 /min
-         */
-        LocalDate date1 = LocalDate.of(Integer.parseInt(date.substring(0, 4)) ,
-                Integer.parseInt(date.substring(5, 7)), Integer.parseInt(date.substring(8, 10)));
-        LocalTime time1 = LocalTime.of(Integer.parseInt(date.substring(11, 13)), Integer.parseInt(date.substring(14, 16)));
-
-        /**
-         * LocalDate object is inserted into datePicker.setDate() to set the value of the dataPicker.
-         * LocalTime object is inserted into timePicker.setTime() to set the value of the timePicker.
-         */
-        dateTimePickerOrderDateTime.datePicker.setDate(date1);
-        dateTimePickerOrderDateTime.timePicker.setTime(time1);
-        jTextFieldItemName.setText(model.getValueAt(i, 5).toString());
-    }//GEN-LAST:event_jTableOrderMouseClicked
-
-    /** Reads the order form, checks IDs, inserts the order, and refreshes the table. */
-    private void jButtonInsertOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertOrderActionPerformed
-        // TODO add your handling code here:
-        //System.out.println(dateTimePicker.datePicker.getDateStringOrEmptyString() + " " + dateTimePicker.timePicker.getTimeStringOrEmptyString()+":00.0");
-        if (!jTextFieldOrderID.getText().isEmpty()) {
-            int ID = Integer.parseInt(jTextFieldOrderID.getText().trim());
-            int CID = Integer.parseInt(jTextFieldOrderCustomerID.getText().trim());
-            int price = Integer.parseInt(jTextFieldOrderPrice.getText().trim());
-            String date = dateTimePickerOrderDateTime.datePicker.getDateStringOrEmptyString() + " " + dateTimePickerOrderDateTime.timePicker.getTimeStringOrEmptyString()+":00.0";
-            String itemName = jTextFieldItemName.getText().trim();
-            primaryKeyViolationOrder(ID);
-            foreignKeyViolationOrder(CID);
-            addOrder(ID, price, date, itemName, CID);
-            refreshOrdersTable();
-            clearOrderTextFields();
+    private void execute(String action, Runnable work) {
+        try {
+            work.run();
+        } catch (IllegalArgumentException | IllegalStateException ex) {
+            showError(action + ": " + ex.getMessage());
+        } catch (RuntimeException ex) {
+            showError(action + " failed: " + ex.getMessage());
         }
-        else
-        {
-            alert("ID cannot be empty", "Insert error");
-        }
-    }//GEN-LAST:event_jButtonInsertOrderActionPerformed
+    }
 
-    /** Updates an existing order identified by its order ID. */
-    private void jButtonUpdateOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateOrderActionPerformed
-        if (!jTextFieldOrderID.getText().isEmpty()) {
-            int ID = Integer.parseInt(jTextFieldOrderID.getText().trim());
-            int CID = Integer.parseInt(jTextFieldOrderCustomerID.getText().trim());
-            int price = Integer.parseInt(jTextFieldOrderPrice.getText().trim());
-            String date = dateTimePickerOrderDateTime.datePicker.getDateStringOrEmptyString() + " " + dateTimePickerOrderDateTime.timePicker.getTimeStringOrEmptyString()+":00.0";
-            String itemName = jTextFieldItemName.getText().trim();
-            Order order = getOrder(ID);
-            if(order.getID() != -1) {
-                foreignKeyViolationOrder(CID);
-                updateOrder(ID, price, date, itemName, CID);
-                refreshOrdersTable();
-            }
-            else
-            {
-                alert("Order does not exist", "Update error");
-            }
-        }
-        else
-        {
-            alert("ID cannot be empty", "Update error");
-        }
-    }//GEN-LAST:event_jButtonUpdateOrderActionPerformed
+    private void showError(String message) {
+        JOptionPane.showMessageDialog(this, message, "Hot Dog Stand",
+                JOptionPane.ERROR_MESSAGE);
+    }
 
-    /** Confirms and deletes the selected order when its ID exists. */
-    private void jButtonDeleteOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteOrderActionPerformed
-        if (!jTextFieldOrderID.getText().isEmpty()) {
-            int ID = Integer.parseInt(jTextFieldOrderID.getText().trim());
-            int CID = Integer.parseInt(jTextFieldOrderCustomerID.getText().trim());
-            int price = Integer.parseInt(jTextFieldOrderPrice.getText().trim());
-            String date = dateTimePickerOrderDateTime.datePicker.getDateStringOrEmptyString() + " " + dateTimePickerOrderDateTime.timePicker.getTimeStringOrEmptyString()+":00.0";
-            String itemName = jTextFieldItemName.getText().trim();
-            Order order = getOrder(ID);
-            if(order.getID() != -1) {
-                int option = JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to Delete?", "Delete confirmation", JOptionPane.YES_NO_OPTION);
-                if(option == 0) {
-                    deleteOrder(ID, price, date, itemName, CID);
-                    refreshOrdersTable();
-                    clearOrderTextFields();
-                }
-            }
-            else
-            {
-                alert("Order does not exist", "Delete error");
-            }
-        }
-        else
-        {
-            alert("ID cannot be empty", "Delete error");
-        }
-    }//GEN-LAST:event_jButtonDeleteOrderActionPerformed
+    private boolean confirm(String type) {
+        return JOptionPane.showConfirmDialog(this,
+                "Delete this " + type + "?", "Confirm deletion",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+    }
 
-    //handles delete button action
-    /** Confirms and deletes an existing customer record. */
-    private void jButtonDeleteCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteCustomerActionPerformed
-        // TODO add your handling code here:
-        if (!jTextFieldCustomerID.getText().isEmpty()) {
-            int ID = Integer.parseInt(jTextFieldCustomerID.getText().trim());
-            String fName = jTextFieldCustomerLastName.getText().trim();
-            String lName = jTextFieldCustomerFirstName.getText().trim();
-            String favoriteMeal = jTextFieldCustomerFavoriteMeal.getText().trim();
-            Customer customer = getCustomer(ID);
-            if(customer.getID() != -1) {
-                int option = JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to Delete?", "Delete confirmation", JOptionPane.YES_NO_OPTION);
-                if(option == 0) {
-                    deleteCustomer(ID, fName, lName, favoriteMeal);
-                    refreshCustomersTable();
-                    clearCustomerTextFields();
-                }
-            }
-            else
-            {
-                alert("Customer does not exist", "Delete error");
-            }
-        }
-        else
-        {
-            alert("ID cannot be empty", "Delete error");
-        }
-    }//GEN-LAST:event_jButtonDeleteCustomerActionPerformed
-
-    //handles update button action
-    /** Reads customer fields and updates the matching database record. */
-    private void jButtonUpdateCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateCustomerActionPerformed
-        // TODO add your handling code here:
-        if (!jTextFieldCustomerID.getText().isEmpty()) {
-            int ID = Integer.parseInt(jTextFieldCustomerID.getText().trim());
-            String fName = jTextFieldCustomerLastName.getText().trim();
-            String lName = jTextFieldCustomerFirstName.getText().trim();
-            String favoriteMeal = jTextFieldCustomerFavoriteMeal.getText().trim();
-            Customer customer = getCustomer(ID);
-            if(customer.getID() != -1) {
-                updateCustomer(ID, fName, lName, favoriteMeal);
-                refreshCustomersTable();
-            }
-            else
-            {
-                alert("Customer does not exist", "Update error");
-            }
-        }
-        else
-        {
-            alert("ID cannot be empty", "Update error");
-        }
-    }//GEN-LAST:event_jButtonUpdateCustomerActionPerformed
-
-    //handle insert button action
-    /** Reads customer fields, checks for a duplicate ID, and inserts a record. */
-    private void jButtonInsertCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertCustomerActionPerformed
-        // TODO add your handling code here:
-
-        if (!jTextFieldCustomerID.getText().isEmpty()) {
-            int ID = Integer.parseInt(jTextFieldCustomerID.getText().trim());
-            String fName = jTextFieldCustomerLastName.getText().trim();
-            String lName = jTextFieldCustomerFirstName.getText().trim();
-            String favoriteMeal = jTextFieldCustomerFavoriteMeal.getText().trim();
-            primaryKeyViolationCustomer(ID);
-            addCustomer(ID, fName, lName, favoriteMeal);
+    private void insertCustomer() {
+        execute("Insert customer", () -> {
+            Customer c = customerFromForm();
+            if (customerDAO.get(c.getID()).isPresent())
+                throw new IllegalArgumentException("Customer ID already exists.");
+            customerDAO.insert(c);
             refreshCustomersTable();
-            clearCustomerTextFields();
+            clearCustomer();
+        });
+    }
+
+    private void updateCustomer() {
+        execute("Update customer", () -> {
+            Customer c = customerFromForm();
+            if (!customerDAO.get(c.getID()).isPresent())
+                throw new IllegalArgumentException("Customer does not exist.");
+            customerDAO.update(c);
+            refreshCustomersTable();
+        });
+    }
+
+    private void deleteCustomer() {
+        execute("Delete customer", () -> {
+            int id = number(jTextFieldCustomerID, "Customer ID");
+            Customer c = customerDAO.get(id).orElseThrow(
+                    () -> new IllegalArgumentException("Customer does not exist."));
+            if (!confirm("customer")) return;
+            customerDAO.delete(c);
+            refreshCustomersTable();
+            refreshOrdersTable();
+            clearCustomer();
+        });
+    }
+
+    private void insertOrder() {
+        execute("Insert order", () -> {
+            Order o = orderFromForm();
+            if (orderDAO.get(o.getID()).isPresent())
+                throw new IllegalArgumentException("Order ID already exists.");
+            validateOrderCustomer(o);
+            orderDAO.insert(o);
+            refreshOrdersTable();
+            clearOrder();
+        });
+    }
+
+    private void updateOrder() {
+        execute("Update order", () -> {
+            Order o = orderFromForm();
+            if (!orderDAO.get(o.getID()).isPresent())
+                throw new IllegalArgumentException("Order does not exist.");
+            validateOrderCustomer(o);
+            orderDAO.update(o);
+            refreshOrdersTable();
+        });
+    }
+
+    private void deleteOrder() {
+        execute("Delete order", () -> {
+            int id = number(jTextFieldOrderID, "Order ID");
+            Order o = orderDAO.get(id).orElseThrow(
+                    () -> new IllegalArgumentException("Order does not exist."));
+            if (!confirm("order")) return;
+            orderDAO.delete(o);
+            refreshOrdersTable();
+            clearOrder();
+        });
+    }
+
+    private void validateOrderCustomer(Order order) {
+        if (!customerDAO.get(order.getCustomerID()).isPresent())
+            throw new IllegalArgumentException("Customer ID does not exist.");
+    }
+
+    private void refreshCustomersTable() {
+        DefaultTableModel model = (DefaultTableModel) jTableCustomer.getModel();
+        model.setRowCount(0);
+        for (Customer c : customerDAO.getAll()) {
+            model.addRow(new Object[]{
+                    c.getID(), c.getFirstName(), c.getLastName(), c.getFavoriteMeal()
+            });
         }
-        else
-        {
-            alert("ID cannot be empty", "Insert error");
-        }
-    }//GEN-LAST:event_jButtonInsertCustomerActionPerformed
-
-    //set the values of a row to the textfields
-    /** Fills the customer input fields from the selected table row. */
-    private void jTableCustomerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableCustomerMouseClicked
-        // TODO add your handling code here:
-        int i = jTableCustomer.getSelectedRow();
-        TableModel model = jTableCustomer.getModel();
-        jTextFieldCustomerID.setText(model.getValueAt(i, 0).toString());
-        jTextFieldCustomerLastName.setText(model.getValueAt(i, 1).toString());
-        jTextFieldCustomerFirstName.setText(model.getValueAt(i, 2).toString());
-        jTextFieldCustomerFavoriteMeal.setText(model.getValueAt(i, 3).toString());
-    }//GEN-LAST:event_jTableCustomerMouseClicked
-
-    /** Action hook for pressing Enter in the Favorite Meal field (currently empty). */
-    private void jTextFieldCustomerFavoriteMealActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCustomerFavoriteMealActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldCustomerFavoriteMealActionPerformed
-
-
-
-    //method to show an info alert
-    /** Displays an informational message to the user. */
-    public void alert(String msg) {
-        JOptionPane.showMessageDialog(rootPane, msg);
     }
 
-    //method to check for order's customer id foreign key violation
-    /** Warns if the order refers to a customer ID that does not exist. */
-    public void foreignKeyViolationOrder(int id) {
-        if(getCustomer(id).getID() == -1) {
-            alert("Customer ID does not exist", "Foreign Key Violation");
+    private void refreshOrdersTable() {
+        DefaultTableModel model = (DefaultTableModel) jTableOrder.getModel();
+        model.setRowCount(0);
+        for (Order o : orderDAO.getAll()) {
+            String name = customerDAO.get(o.getCustomerID())
+                    .map(c -> c.getFirstName() + " " + c.getLastName())
+                    .orElse("(missing customer)");
+            model.addRow(new Object[]{
+                    o.getID(), o.getCustomerID(), name, o.getPrice(),
+                    o.getDateTime(), o.getItemName()
+            });
         }
     }
 
-    //method to check for customer primary key violation
-    /** Warns if a customer with the proposed primary key already exists. */
-    public void primaryKeyViolationCustomer(int id) {
-        if(getCustomer(id).getID() != -1) {
-            alert("Another customer already exists with same Customer ID, please try another Customer ID", "Primary Key Violation");
-        }
-    }
-
-    //method to check for order primary key violation
-    /** Warns if an order with the proposed primary key already exists. */
-    public void primaryKeyViolationOrder(int id) {
-        if(getOrder(id).getID() != -1) {
-            alert("Another order already exists with same Order ID, please try another Order ID", "Primary Key Violation");
-        }
-    }
-
-    //method to show an error alert
-    /** Displays an error dialog with a custom title. */
-    public void alert(String msg, String title) {
-        JOptionPane.showMessageDialog(rootPane, msg, title, JOptionPane.ERROR_MESSAGE);
-    }
-
-    /**
-     * CUSTOMER CRUD FUNCTIONS
-     */
-    /** Creates a Customer object and delegates insertion to the DAO. */
-    private static void addCustomer(int id, String firstName, String lastName, String favoriteMeal) {
-        Customer customer;
-        customer = new Customer(id, firstName, lastName, favoriteMeal);
-        customerDAO.insert(customer);
-    }
-
-    /** Delegates a customer update to the DAO. */
-    private static void updateCustomer(int id, String firstName, String lastName, String favoriteMeal) {
-        Customer customer;
-        customer = new Customer(id, firstName, lastName, favoriteMeal);
-        customerDAO.update(customer);
-    }
-
-    /** Delegates a customer deletion to the DAO. */
-    private static void deleteCustomer(int id, String firstName, String lastName, String favoriteMeal) {
-        Customer contact;
-        contact = new Customer(id, firstName, lastName, favoriteMeal);
-        customerDAO.delete(contact);
-    }
-
-    /** Finds a customer by ID; returns an ID -1 placeholder if absent. */
-    static Customer getCustomer(int id) {
-        Optional<Customer> customer = customerDAO.get(id);
-        return customer.orElseGet(() -> new Customer(-1, "Non-exist", "Non-exist", "Non-exist"));
-    }
-
-
-    /**
-     * ORDER CRUD FUNCTIONS
-     */
-    /** Creates an Order object and delegates insertion to the DAO. */
-    private static void addOrder(int ID, int price, String dateTime, String itemName, int customerID) {
-        Order order;
-        order = new Order(ID, price, dateTime, itemName, customerID);
-        orderDAO.insert(order);
-    }
-
-    /** Delegates an order update to the DAO. */
-    private static void updateOrder(int ID, int price, String dateTime, String itemName, int customerID) {
-        Order order;
-        order = new Order(ID, price, dateTime, itemName, customerID);
-        orderDAO.update(order);
-    }
-
-    /** Delegates an order deletion to the DAO. */
-    private static void deleteOrder(int ID, int price, String dateTime, String itemName, int customerID) {
-        Order order;
-        order = new Order(ID, price, dateTime, itemName, customerID);
-        orderDAO.delete(order);
-    }
-
-    /** Finds an order by ID; returns an ID -1 placeholder if absent. */
-    static Order getOrder(int id) {
-        Optional<Order> order = orderDAO.get(id);
-        return order.orElseGet(() -> new Order(-1, -1, "Non-exist", "Non-exist", -1));
-    }
-
-    //method to clear the customer txt fields
-    /** Resets all customer form fields after an operation. */
-    private void clearCustomerTextFields() {
+    private void clearCustomer() {
         jTextFieldCustomerID.setText("");
-        jTextFieldCustomerLastName.setText("");
         jTextFieldCustomerFirstName.setText("");
+        jTextFieldCustomerLastName.setText("");
         jTextFieldCustomerFavoriteMeal.setText("");
     }
 
-    //method to clear the order txt fields
-    /** Resets order text fields; the date/time picker is left unchanged. */
-    private void clearOrderTextFields() {
+    private void clearOrder() {
         jTextFieldOrderID.setText("");
         jTextFieldOrderCustomerID.setText("");
         jTextFieldOrderPrice.setText("");
+        jTextFieldOrderDateTime.setText("");
         jTextFieldItemName.setText("");
     }
 
-    //fetch customer table
-    /** Rebuilds the customer JTable from the latest DAO query results. */
-    private void refreshCustomersTable() {
-        // Fetch current rows from the database through the DAO.
-        List<Customer> customers = customerDAO.getAll();
-        DefaultTableModel model = (DefaultTableModel) jTableCustomer.getModel();
-        //Clear all items in tblContacts
-        for(int i = model.getRowCount() - 1; i >= 0; i-- ) {
-            model.removeRow(i);
-        }
-        for (Customer customer : customers) {
-            Object[] row = new Object[4];
-            row[0] = customer.getID();
-            row[1] = customer.getFirstName();
-            row[2] = customer.getLastName();
-            row[3] = customer.getFavoriteMeal();
-            model.addRow(row);
-        }
-    }
-
-    //fetch order table
-    /** Rebuilds the orders JTable, looking up customer names by ID. */
-    private void refreshOrdersTable() {
-        // Fetch orders and rebuild the read-only table model.
-        List<Order> orders = orderDAO.getAll();
-        DefaultTableModel model = (DefaultTableModel) jTableOrder.getModel();
-        //Clear all items in tblContacts
-        for(int i = model.getRowCount() - 1; i >= 0; i-- ) {
-            model.removeRow(i);
-        }
-        for (Order order : orders) {
-            Object[] row = new Object[6];
-            row[0] = order.getID();
-            row[1] = order.getCustomerID();
-            row[2] = getCustomer(order.getCustomerID()).getFirstName() + " " + getCustomer(order.getCustomerID()).getLastName();
-            row[3] = order.getPrice();
-            row[4] = order.getDateTime();
-            row[5] = order.getItemName();
-            model.addRow(row);
-        }
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    /** Creates the DAOs, selects the Nimbus look and feel, and opens the UI on the EDT. */
-    public static void main(String args[]) {
-        customerDAO = new CustomerDAO();
-        orderDAO = new OrderDAO();
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    public static void main(String[] args) {
+        // Swing windows must be created on the Event Dispatch Thread.
+        SwingUtilities.invokeLater(() -> {
+            try {
+                new Main().setVisible(true);
+            } catch (RuntimeException ex) {
+                JOptionPane.showMessageDialog(null, ex.toString(),
+                        "Startup error", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        // Swing components should be created on the Event Dispatch Thread.
-        java.awt.EventQueue.invokeLater(() -> {
-            new Main().setVisible(true);
         });
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.github.lgooddatepicker.components.DateTimePicker dateTimePickerOrderDateTime;
-    private javax.swing.JButton jButtonDeleteCustomer;
-    private javax.swing.JButton jButtonDeleteOrder;
-    private javax.swing.JButton jButtonInsertCustomer;
-    private javax.swing.JButton jButtonInsertOrder;
-    private javax.swing.JButton jButtonUpdateCustomer;
-    private javax.swing.JButton jButtonUpdateOrder;
-    private javax.swing.JLabel jLabelCustomerFavoriteMeal;
-    private javax.swing.JLabel jLabelCustomerFirstName;
-    private javax.swing.JLabel jLabelCustomerID;
-    private javax.swing.JLabel jLabelCustomerLastName;
-    private javax.swing.JLabel jLabelItemName;
-    private javax.swing.JLabel jLabelOrderCustomerID;
-    private javax.swing.JLabel jLabelOrderDateTime;
-    private javax.swing.JLabel jLabelOrderID;
-    private javax.swing.JLabel jLabelOrderPrice;
-    private javax.swing.JPanel jPanelCustomer;
-    private javax.swing.JPanel jPanelOrder;
-    private javax.swing.JScrollPane jScrollPaneCustomer;
-    private javax.swing.JScrollPane jScrollPaneOrder;
-    private javax.swing.JTabbedPane jTabbedPaneHotDogStand;
-    private javax.swing.JTable jTableCustomer;
-    private javax.swing.JTable jTableOrder;
-    private javax.swing.JTextField jTextFieldCustomerFavoriteMeal;
-    private javax.swing.JTextField jTextFieldCustomerFirstName;
-    private javax.swing.JTextField jTextFieldCustomerID;
-    private javax.swing.JTextField jTextFieldCustomerLastName;
-    private javax.swing.JTextField jTextFieldItemName;
-    private javax.swing.JTextField jTextFieldOrderCustomerID;
-    private javax.swing.JTextField jTextFieldOrderID;
-    private javax.swing.JTextField jTextFieldOrderPrice;
-    // End of variables declaration//GEN-END:variables
 }
